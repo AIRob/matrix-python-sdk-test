@@ -1,0 +1,9 @@
+id: "wave"
+url: "http://localhost:5000"
+as_token: wfghWEGh3wgWHEf3478sHFWE
+hs_token: ugw8243igya57aaABGFfgeyu
+sender_localpart: wave
+namespaces:
+  users: []  # Namespaces of users which should be delegated to the AS 
+  aliases: []  # Namespaces of room aliases which should be delegated to the AS
+  rooms: [] # Namespaces of room ids which should be delegated to the AS

@@ -1,0 +1,61 @@
+import com.mashape.unirest.http.*;
+import com.mashape.unirest.http.exceptions.UnirestException;
+import com.mashape.unirest.http.async.Callback;
+import com.mashape.unirest.request.*;
+
+import org.apache.http.conn.ssl.*;
+import javax.net.ssl.*;
+import java.util.concurrent.Future;
+import org.apache.http.impl.nio.client.CloseableHttpAsyncClient;
+import org.apache.http.impl.nio.client.HttpAsyncClients;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+
+import org.json.JSONObject;
+
+
+    try{
+SSLContext sslcontext = SSLContexts.custom()
+            .loadTrustMaterial(null, new TrustSelfSignedStrategy())
+            .build();
+
+    CloseableHttpClient httpclient = HttpClients.custom()
+            .setHostnameVerifier(SSLConnectionSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER)
+            .setSSLContext(sslcontext).build();
+            .build();
+    Unirest.setHttpClient(httpclient);
+
+    CloseableHttpAsyncClient client = HttpAsyncClients.custom()
+        .setHostnameVerifier(SSLConnectionSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER)
+        .setSSLContext(sslcontext).build();
+Unirest.setAsyncHttpClient(client);
+
+
+JSONObject obj = new JSONObject();
+
+      obj.put("msgtype","m.text");
+obj.put("body","another");
+
+
+
+Future<HttpResponse<JsonNode>> future = Unirest.get("https://localhost:8448/_matrix/client/r0/sync")
+  .header("Content-Type", "application/json")
+.queryString("access_token", "wfghWEGh3wgWHEf3478sHFWE")
+   .asJsonAsync(new Callback<JsonNode>() {
+
+    public void failed(UnirestException e) {
+        System.out.println("The request has failed" + e);
+    }
+
+    public void completed(HttpResponse<JsonNode> response) {
+         JSONObject myObj = response.getBody().getObject();
+
+      System.out.println("\n\n\n"+myObj);
+    }
+
+    public void cancelled() {
+        System.out.println("The request has been cancelled");
+    }
+
+});
+}catch(Exception e){System.out.println("\n\n\n Error "+e);}
